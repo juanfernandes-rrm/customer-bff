@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: customer-bff
+  cloud:
+    gateway:
+      routes:
+        - id: receipt-scan
+          uri: http://localhost:8082
+          predicates:
+            - Path=/receipt-scan/**
+          filters:
+            - StripPrefix=1
+        - id: catalog
+          uri: http://localhost:8083
+          predicates:
+            - Path=/catalog/**
+          filters:
+            - StripPrefix=1
+        - id: user
+          uri: http://localhost:8084
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+        - id: social
+          uri: http://localhost:8085
+          predicates:
+            - Path=/social/**
+          filters:
+            - StripPrefix=1
