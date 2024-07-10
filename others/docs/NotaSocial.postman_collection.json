@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "57e251e0-ca92-4eab-b916-1412b53d5980",
+		"name": "NotaSocial",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23737631"
+	},
+	"item": [
+		{
+			"name": "ReceiptScan",
+			"item": [
+				{
+					"name": "Scan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/scan",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"scan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalog",
+			"item": [
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product?page=0&size=10&sortDirection=ASC&sortBy=name",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product/search?name=leite",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "leite"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product/lowest-price?page=0&size=10&sortDirection=ASC&sortBy=code",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product",
+								"lowest-price"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "code"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create store user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/receipt-scan/scan",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"receipt-scan",
+								"scan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BFF customer",
+			"item": [
+				{
+					"name": "Cadastrar nota fiscal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/receipt-scan/scan",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"receipt-scan",
+								"scan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/catalog/product?page=0&size=10&sortDirection=ASC&sortBy=name",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"catalog",
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/catalog/product/search?name=CEBOLA",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"catalog",
+								"product",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "CEBOLA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Cards by lowest price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/catalog/product/lowest-price?page=0&size=10&sortDirection=ASC&sortBy=code",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"catalog",
+								"product",
+								"lowest-price"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "code"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "social",
+			"item": [
+				{
+					"name": "Get Product Cards",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
