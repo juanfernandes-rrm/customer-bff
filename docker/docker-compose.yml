@@ -1,0 +1,173 @@
+version: '3.9'
+
+networks:
+  app_network:
+    driver: bridge
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: multi_schema_db
+    networks:
+      - app_network
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      - app_network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  receipt-scan:
+    build:
+      context: ../../receipt-scan
+    container_name: receipt_scan
+    networks:
+      - app_network
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/receipt_scan_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
+    ports:
+      - "8082:8082"
+
+  catalog:
+    build:
+      context: ../../catalog
+    container_name: catalog
+    networks:
+      - app_network
+    depends_on:
+      receipt-scan:
+        condition: service_started
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/catalog_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
+    ports:
+      - "8083:8083"
+
+  register:
+    build:
+      context: ../../register
+    container_name: register
+    networks:
+      - app_network
+    depends_on:
+      receipt-scan:
+        condition: service_started
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/register_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
+    ports:
+      - "8084:8084"
+
+  social:
+    build:
+      context: ../../social
+    container_name: social
+    networks:
+      - app_network
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/social_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
+    ports:
+      - "8085:8085"
+
+  customer-bff:
+    build:
+      context: ../
+      dockerfile: ../customer-bff/docker/Dockerfile
+    container_name: customer_bff
+    networks:
+      - app_network
+    depends_on:
+      receipt-scan:
+        condition: service_started
+      catalog:
+        condition: service_started
+      register:
+        condition: service_started
+      social:
+        condition: service_started
+    environment:
+      - SPRING_APPLICATION_NAME=customer-bff
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_ID=receipt-scan
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://receipt-scan:8082
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0=Path=/receipt-scan/**
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0=StripPrefix=1
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_ID=catalog
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://catalog:8083
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0=Path=/catalog/**
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0=StripPrefix=1
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_ID=user
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://user:8084
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0=Path=/user/**
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0=StripPrefix=1
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_ID=social
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://social:8085
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_PREDICATES_0=Path=/social/**
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_FILTERS_0=StripPrefix=1
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
