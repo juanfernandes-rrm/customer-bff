@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: customer-bff
+    name: gateway
   security:
     oauth2:
       client:

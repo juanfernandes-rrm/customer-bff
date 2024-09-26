@@ -11,10 +11,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>br.ufpr.tads.customer-bff</groupId>
-	<artifactId>customer-bff</artifactId>
+	<groupId>br.ufpr.tads.gateway</groupId>
+	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>customer-bff</name>
+	<name>gateway</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

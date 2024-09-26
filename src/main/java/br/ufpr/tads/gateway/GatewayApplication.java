@@ -1,4 +1,4 @@
-package br.ufpr.tads.customerbff;
+package br.ufpr.tads.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
-public class CustomerBffApplication {
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CustomerBffApplication.class, args);
+		SpringApplication.run(GatewayApplication.class, args);
 	}
 
 }

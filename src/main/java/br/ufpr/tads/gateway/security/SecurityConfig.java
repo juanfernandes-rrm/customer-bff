@@ -1,4 +1,4 @@
-package br.ufpr.tads.customerbff.security;
+package br.ufpr.tads.gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
