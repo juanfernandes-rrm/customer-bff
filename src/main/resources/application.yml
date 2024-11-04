@@ -16,6 +16,7 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/realms/master
+            logout-uri: http://localhost:8080/realms/master/protocol/openid-connect/logout
   cloud:
     gateway:
       routes:
