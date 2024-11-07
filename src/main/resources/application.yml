@@ -9,14 +9,14 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: receipt-bff
-            client-secret: Jt0JvmekKSwfVuj2vqd0LoETyLnYxEd1
+            client-id: gateway
+            client-secret: h6rXzmwy82nINzNeMJs4EEnJqkycfsfq
             scope: openid, email, profile
             redirect-uri: http://localhost:3000/callback
         provider:
           keycloak:
-            issuer-uri: http://localhost:8080/realms/master
-            logout-uri: http://localhost:8080/realms/master/protocol/openid-connect/logout
+            issuer-uri: http://localhost:8080/realms/nota-social
+            logout-uri: http://localhost:8080/realms/nota-social/protocol/openid-connect/logout
   cloud:
     gateway:
       routes:

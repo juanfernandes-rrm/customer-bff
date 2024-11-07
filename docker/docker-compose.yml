@@ -169,5 +169,33 @@ services:
     ports:
       - "8000:8000"
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.5
+    container_name: keycloak
+    networks:
+      - app_network
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://database:3306/keycloak?createDatabaseIfNotExist=true
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: rootpassword
+
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_PROXY: "edge"
+      KC_HTTP_PORT: 8080
+      KC_SPI_THEME_CACHE_THEMES_CACHE_MILLISECONDS: 0
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./docker/keycloak/keycloak-realm-export.json:/opt/keycloak/data/import/realm-config.json
+    command: [ "start-dev", "--import-realm"]
+
 volumes:
   mysql_data:
