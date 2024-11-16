@@ -175,7 +175,7 @@
 			]
 		},
 		{
-			"name": "BFF customer",
+			"name": "Gateway",
 			"item": [
 				{
 					"name": "Cadastrar nota fiscal",

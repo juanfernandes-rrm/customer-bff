@@ -1,4 +1,4 @@
-﻿# customer-bff
+﻿# gateway
 
 Este projeto é o ***BFF*** mobile do sistema **NotaSocial**, desenvolvido para a disciplina de **Trabalho de Conclusão do Curso(TCC)**. Ele coordena as requisições aos serviços: ***receipt-scan, catalog, user, e social***.
 Este readme descreve como configurar e executar o sistama a partir do ***customer-bff**.
@@ -17,7 +17,7 @@ Para que o docker-compose seja exeutado corretamente, clone os repositórios dos
 
 ```
 project
-└─── customer-bff
+└─── gateway
 └─── receipt-scan
 └─── catalog
 └─── register
@@ -44,7 +44,7 @@ Isso irá construir as imagens e iniciar os contêineres conforme configurado no
 
     receipt-scan: Responsável por ...
     catalog: Responsável por ...
-    user: Responsável por ...
+    register: Responsável por ...
     social: Responsável por ...
 
 ### 5. Documentação dos Endpoints
@@ -54,7 +54,7 @@ No projeto, está disponibilizado uma collection postman.
 
     receipt-scan: Documentação dos endpoints
     catalog: Documentação dos endpoints
-    user: Documentação dos endpoints
-    BFF (customer-bff): Documentação dos endpoints
+    register: Documentação dos endpoints
+    gateway: Documentação dos endpoints
 
     

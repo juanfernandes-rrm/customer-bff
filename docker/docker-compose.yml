@@ -132,11 +132,11 @@ services:
     ports:
       - "8085:8085"
 
-  customer-bff:
+  gateway:
     build:
       context: ../
-      dockerfile: ../customer-bff/docker/Dockerfile
-    container_name: customer_bff
+      dockerfile: ../gateway/docker/Dockerfile
+    container_name: gateway
     networks:
       - app_network
     depends_on:
@@ -148,8 +148,10 @@ services:
         condition: service_started
       social:
         condition: service_started
+      keycloak:
+        condition: service_started
     environment:
-      - SPRING_APPLICATION_NAME=customer-bff
+      - SPRING_APPLICATION_NAME=gateway
       - SPRING_CLOUD_GATEWAY_ROUTES_0_ID=receipt-scan
       - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://receipt-scan:8082
       - SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0=Path=/receipt-scan/**
@@ -168,6 +170,34 @@ services:
       - SPRING_CLOUD_GATEWAY_ROUTES_3_FILTERS_0=StripPrefix=1
     ports:
       - "8080:8080"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.5
+    container_name: keycloak
+    networks:
+      - app_network
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://database:3306/keycloak?createDatabaseIfNotExist=true
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: rootpassword
+
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_PROXY: "edge"
+      KC_HTTP_PORT: 8080
+      KC_SPI_THEME_CACHE_THEMES_CACHE_MILLISECONDS: 0
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./docker/keycloak/keycloak-realm-export.json:/opt/keycloak/data/import/realm-config.json
+    command: [ "start-dev", "--import-realm" ]
 
 volumes:
   mysql_data:

@@ -1,10 +1,10 @@
-package br.ufpr.tads.customerbff;
+package br.ufpr.tads.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CustomerBffApplicationTests {
+class GatewayApplicationTests {
 
 	@Test
 	void contextLoads() {
