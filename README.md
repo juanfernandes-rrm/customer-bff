@@ -1,6 +1,6 @@
 ﻿# gateway
 
-Este projeto é o ***BFF*** mobile do sistema **NotaSocial**, desenvolvido para a disciplina de **Trabalho de Conclusão do Curso(TCC)**. Ele coordena as requisições aos serviços: ***receipt-scan, catalog, user, e social***.
+Este projeto é o ***BFF*** mobile do sistema **NotaSocial**, desenvolvido para a disciplina de **Trabalho de Conclusão do Curso(TCC)**. Ele coordena as requisições aos serviços: ***receipt-scan, catalog, register, e social***.
 Este readme descreve como configurar e executar o sistama a partir do ***customer-bff**.
 
 ## Pré-requisitos
@@ -13,7 +13,11 @@ Certifique-se de ter instalado:
 ## Configuração e Execução
 
 ### 1. Clonar os Repositórios:
-Para que o docker-compose seja exeutado corretamente, clone os repositórios dos serviços em um mesmo repositório de forma que siga a seguinte estrutura:
+Para que o docker-compose seja executado corretamente, clone os repositórios dos serviços em um mesmo repositório de forma que siga a seguinte estrutura:
+- [receipt-scan](https://github.com/juanfernandes-rrm/receipt-scan)
+- [catalog](https://github.com/juanfernandes-rrm/catalog)
+- [register](https://github.com/juanfernandes-rrm/register)
+- [social](https://github.com/juanfernandes-rrm/social)
 
 ```
 project
