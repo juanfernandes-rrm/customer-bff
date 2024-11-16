@@ -169,7 +169,7 @@ services:
       - SPRING_CLOUD_GATEWAY_ROUTES_3_PREDICATES_0=Path=/social/**
       - SPRING_CLOUD_GATEWAY_ROUTES_3_FILTERS_0=StripPrefix=1
     ports:
-      - "8080:8080"
+      - "8000:8000"
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.5
