@@ -55,6 +55,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/receipt_scan_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
@@ -77,6 +79,8 @@ services:
       database:
         condition: service_healthy
       rabbitmq:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/catalog_db?createDatabaseIfNotExist=true
@@ -101,6 +105,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/register_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
@@ -122,6 +128,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/social_db?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
@@ -131,6 +139,25 @@ services:
       - SPRING_RABBITMQ_PASSWORD=password
     ports:
       - "8085:8085"
+
+  auth:
+    build:
+      context: ../../auth
+    container_name: auth
+    networks:
+      - app_network
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/social_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
+    ports:
+      - "8086:8086"
 
   gateway:
     build:
@@ -149,7 +176,7 @@ services:
       social:
         condition: service_started
       keycloak:
-        condition: service_started
+        condition: service_healthy
     environment:
       - SPRING_APPLICATION_NAME=gateway
       - SPRING_CLOUD_GATEWAY_ROUTES_0_ID=receipt-scan
@@ -190,6 +217,7 @@ services:
       KC_PROXY: "edge"
       KC_HTTP_PORT: 8080
       KC_SPI_THEME_CACHE_THEMES_CACHE_MILLISECONDS: 0
+      KC_HEALTH_ENABLED: true
     ports:
       - "8080:8080"
     depends_on:
@@ -198,6 +226,11 @@ services:
     volumes:
       - ./docker/keycloak/keycloak-realm-export.json:/opt/keycloak/data/import/realm-config.json
     command: [ "start-dev", "--import-realm" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;cat <&3 | grep -q '\"status\": \"UP\"' && exit 0 || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   mysql_data:

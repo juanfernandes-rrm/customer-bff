@@ -18,6 +18,7 @@ Para que o docker-compose seja executado corretamente, clone os repositórios do
 - [catalog](https://github.com/juanfernandes-rrm/catalog)
 - [register](https://github.com/juanfernandes-rrm/register)
 - [social](https://github.com/juanfernandes-rrm/social)
+- [auth](https://github.com/juanfernandes-rrm/auth-mvp)
 
 ```
 project
@@ -26,6 +27,7 @@ project
 └─── catalog
 └─── register
 └─── social
+└─── auth
 ```
 
 ### 2. Configuração do Docker Compose
@@ -50,6 +52,7 @@ Isso irá construir as imagens e iniciar os contêineres conforme configurado no
     catalog: Responsável por ...
     register: Responsável por ...
     social: Responsável por ...
+    auth: Responsável por ...
 
 ### 5. Documentação dos Endpoints
 
@@ -59,6 +62,8 @@ No projeto, está disponibilizado uma collection postman.
     receipt-scan: Documentação dos endpoints
     catalog: Documentação dos endpoints
     register: Documentação dos endpoints
+    social: Documentação dos endpoints
     gateway: Documentação dos endpoints
+    auth: Documentação dos endpoints
 
     
