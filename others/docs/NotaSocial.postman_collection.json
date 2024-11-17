@@ -7,168 +7,13 @@
 	},
 	"item": [
 		{
-			"name": "ReceiptScan",
+			"name": "Auth",
 			"item": [
 				{
-					"name": "Scan",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/scan",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"scan"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Catalog",
-			"item": [
-				{
-					"name": "Get Products",
+					"name": "Get token",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8083/product?page=0&size=10&sortDirection=ASC&sortBy=name",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"product"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sortDirection",
-									"value": "ASC"
-								},
-								{
-									"key": "sortBy",
-									"value": "name"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Search Products",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8083/product/search?name=leite",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"product",
-								"search"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "leite"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all products",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8083/product/lowest-price?page=0&size=10&sortDirection=ASC&sortBy=code",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"product",
-								"lowest-price"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								},
-								{
-									"key": "sortDirection",
-									"value": "ASC"
-								},
-								{
-									"key": "sortBy",
-									"value": "code"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Create store user",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8083/receipt-scan/scan",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"receipt-scan",
-								"scan"
-							]
-						}
+						"header": []
 					},
 					"response": []
 				}
@@ -178,13 +23,29 @@
 			"name": "Gateway",
 			"item": [
 				{
-					"name": "Cadastrar nota fiscal",
+					"name": "Scan receipt",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxSDZWa2RZRFVrZkhJS1lXUFY1SV9aTXY1QVIyWGwyaE9uQUE3b2ptT244In0.eyJleHAiOjE3MzE3ODAzNTAsImlhdCI6MTczMTc3ODU1MCwianRpIjoiMmFiOTk3MGYtMjA0Ni00MzA2LTg0YWItYWJlNzlhNTZlZjhmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9ub3RhLXNvY2lhbCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI0MGYzYjI2Yi1iYWM0LTQ5MDYtYmU4YS0wMzI2ZGEwZDA5MTAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhdXRoIiwic2lkIjoiNDRjYjRjNTgtYzZiYi00Yjg5LWJiMTMtMmMwYzViNzQ2ZTI0IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLW5vdGEtc29jaWFsIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbjI2IGZlcm5hbmRlczI2IiwicHJlZmVycmVkX3VzZXJuYW1lIjoianVhbjI2IiwiZ2l2ZW5fbmFtZSI6Imp1YW4yNiIsImZhbWlseV9uYW1lIjoiZmVybmFuZGVzMjYiLCJlbWFpbCI6Imp1YW5mZXJuYW5kZXMyNkBnbWFpbC5jb20ifQ.dbqQyjL7RVre0lCaxHhq32eQoGscx4qr4ikoMEbB5dcFw5AkzDkI3LdoeXkuC2RL4_K7G9zP8-uo5uErew56PpiMoYfo3Uq1ULTCk7LfawjmCe5slStckDQCNW0O79jdrdhnxd4Fdf9tdKl6DKG2JocHTsHxvqmrLbKgCsbT7LZcopM4wzYxk7IwQor2hQpNrmnZLd6Xghy2NGgzmAyAuUzz5D1q-RTpEC4YHPXRHjlb9ZbDbYfKME07gWN4VByVqFLTQ8NJZeJ2mpkvfuL44zb421XTHEQbLoqmLHx4S6SOnWElOyxh5mqR4WKwdkefRH88NH-KdgwQBfRNAKEjaw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Auth-Identification",
+								"value": "6db73e78-be32-4e9a-a785-06ecc290a8db",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41220911522691000100651180004758151003461118|2|1|1|8EB4FDDE6FCB9D7CF8B0C860A30F646F31B4ED25\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41240851217036000243650010000118041705197291|2|1|1|F67DA6CFF6E57DD3B7F71BF3C099DAA2E0863A36\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,11 +53,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/receipt-scan/scan",
+							"raw": "localhost:8000/receipt-scan/scan",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8000",
 							"path": [
 								"receipt-scan",
 								"scan"
@@ -309,13 +170,774 @@
 			]
 		},
 		{
+			"name": "ReceiptScan",
+			"item": [
+				{
+					"name": "Scan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3VDI2V19rZW9lczNRZlJKcjVXTGRIR3dWRFowd19leUsyeDZyd2xfallZIn0.eyJleHAiOjE3MzAzMjYzNDgsImlhdCI6MTczMDMyNjI4OCwiYXV0aF90aW1lIjoxNzMwMzI2MDU3LCJqdGkiOiJlNzA2NzkyNy0yYjQ5LTRlMjItODg5Ni02NWRiNzA3MDdjNzkiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6WyJub3RhLXNvY2lhbC1yZWFsbSIsIm1hc3Rlci1yZWFsbSIsImFjY291bnQiXSwic3ViIjoiMTI0ZmIxZDQtYmI4Yy00ZjQ0LWJmNjEtMzY2NzkzNWIwZmFkIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmVjZWlwdC1iZmYiLCJzaWQiOiJhYTI0MmU3OC1mMWI4LTRhNDMtYjY1Yi1iOThkYTQ0Y2ExYzgiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiY3JlYXRlLXJlYWxtIiwiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsImFkbWluIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJub3RhLXNvY2lhbC1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwibWFzdGVyLXJlYWxtIjp7InJvbGVzIjpbInZpZXctcmVhbG0iLCJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiJ9.vqTjuTuo_nPX0jEEI9MJbJeFzlSreqpAUbVcZC6Adcm5YgZdRqeHPAEBTBWMV0aeTwBRYiUwixyDNItYhNmOjKYs1bundVd4e-BgdV-1ahrAkAsa_gTa-dkyFEZglybCTpXkXIzgOP6VGYcc7ugbcRD-SoHJJt0Ohs9451SsTw-VwMiS-nNpKDytpSvcZ0A4NUaDsaIi3P3vO5SvWC-O53INQGORwSKZpO8zGZd94B8zVAfwc1GhB4aXTK4Ycckzqm_oqDVOdhyeO4EEWSCNeUQ4Uei990Fke2tvEtTCSOoIl7xrLtCzecwWZiIPLWO0UJNfjcBuKdyNuSksXIytQg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"http://www.fazenda.pr.gov.br/nfce/qrcode?p=41240893209765037037655080000464181048579172|2|1|1|65F8D5560BDFD0C00C08E2D34CC2A2FAF4831761\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/scan",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"scan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get scanned receipts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3VDI2V19rZW9lczNRZlJKcjVXTGRIR3dWRFowd19leUsyeDZyd2xfallZIn0.eyJleHAiOjE3MzA4MTQwMjAsImlhdCI6MTczMDgxMjIyMCwiYXV0aF90aW1lIjoxNzMwODEyMjE4LCJqdGkiOiIxMTRlZmNkYy01ZWY0LTQzZDQtYjY4ZC0xODI0ZGM3OGQ5MmMiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjNzIyMzc3YS0wZGVlLTQyZTctYTY2ZS02ZDE5OWRhYjFhYmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJyZWNlaXB0LWJmZiIsInNpZCI6IjU4MTRlMmFlLWZmNjUtNGM5Ni1hNWY5LTYxY2Y4NTk1OWM3ZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwLyoiLCJodHRwOi8vbG9jYWxob3N0OjgwMDAvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbiBmZXJuYW5kZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqdWFuIiwiZ2l2ZW5fbmFtZSI6Imp1YW4iLCJmYW1pbHlfbmFtZSI6ImZlcm5hbmRlcyIsImVtYWlsIjoianVhbmZlcm5hbmRlczEwQGdtYWlsLmNvbSJ9.KjsFeVC0au6wPisJEYI6CSlSQiYeEJvP3wbgcz5MNCAYA2vGHMCvtN0u-713f_Axam2a3quMsG6nOeAEeaoI5YljBBoxKMWctuY86aKjZFFB83rbCIvpJID4BxWaVf1ZBFsEc9kVeIPoFWNrmmSyQJYD6OKYEb5fhas_6fuVIIHAwep9aUe8ZCrCRi4TLkuhrXCpVpsDiSThwoWlZMsTLT_ufYIc93E0FAIOjl_-hoKrvUDxKrFUXCnChcsUWaVz5QAtB8zNZyztHOcAsavqxWX0CD2QEGRFekZqFLB7oqYDLNW6_34Mi2FNRjjv1FbuJl3AGJlRJuYmYDdPMrEv-A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/scan/receipts/:idKeycloak?page=0&size=10&sortDirection=ASC&sortBy=scannedAt",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"scan",
+								"receipts",
+								":idKeycloak"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "scannedAt"
+								}
+							],
+							"variable": [
+								{
+									"key": "idKeycloak",
+									"value": "c722377a-0dee-42e7-a66e-6d199dab1abf"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalog",
+			"item": [
+				{
+					"name": "Categoria",
+					"item": [
+						{
+							"name": "Add category",
+							"request": {
+								"method": "POST",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get categories",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Link products to category",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product?page=0&size=10&sortDirection=ASC&sortBy=name",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Products by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product/search?name=leite",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "leite"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all products with lowest price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/product/lowest-price?page=0&size=10&sortDirection=ASC&sortBy=code",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"product",
+								"lowest-price"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "ASC"
+								},
+								{
+									"key": "sortBy",
+									"value": "code"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get price history by product id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get products details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product prices by store",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Create store user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Salla\",\r\n    \"cnpj\": \"12094573000100\",\r\n    \"email\": \"salla@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"urlPhoto\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/store",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create customer user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"juanfernandes1\",\r\n    \"email\": \"juan@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/account/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"account",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customer by keycloakId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/account/user/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"account",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5f1bd0f7-f331-4839-8c2b-b306ce36d406"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get store by keycloakId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/store/:keycloakId",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"store",
+								":keycloakId"
+							],
+							"variable": [
+								{
+									"key": "keycloakId",
+									"value": "cb28705f-3abb-41a7-8cc0-d0a4a2e0cd93"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \"262e7f17-b30b-4b9b-a97d-dfe5c83b0643\"\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8084/account/user/details?page=0&size=10&sortDirection=DESC&sortBy=name",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"account",
+								"user",
+								"details"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortDirection",
+									"value": "DESC"
+								},
+								{
+									"key": "sortBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get nearby store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/store/branch/nearby-from/:cep?distance=100",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"store",
+								"branch",
+								"nearby-from",
+								":cep"
+							],
+							"query": [
+								{
+									"key": "distance",
+									"value": "100"
+								}
+							],
+							"variable": [
+								{
+									"key": "cep",
+									"value": "83326360"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "social",
 			"item": [
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Get user profile by keycloakId",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3VDI2V19rZW9lczNRZlJKcjVXTGRIR3dWRFowd19leUsyeDZyd2xfallZIn0.eyJleHAiOjE3MzA3NDM3NTQsImlhdCI6MTczMDc0MTk1NCwiYXV0aF90aW1lIjoxNzMwNzQxOTUyLCJqdGkiOiI3ZWViZWU3Yi05MTZhLTQxYTMtOTQzNi02ZGNiNjEzZjMzNTEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjNzIyMzc3YS0wZGVlLTQyZTctYTY2ZS02ZDE5OWRhYjFhYmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJyZWNlaXB0LWJmZiIsInNpZCI6IjFiNGRlOWE1LTIyZGUtNGM3ZS04MTAyLTNiNTBiNzUyNTJkMCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwLyoiLCJodHRwOi8vbG9jYWxob3N0OjgwMDAvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbiBmZXJuYW5kZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqdWFuIiwiZ2l2ZW5fbmFtZSI6Imp1YW4iLCJmYW1pbHlfbmFtZSI6ImZlcm5hbmRlcyIsImVtYWlsIjoianVhbmZlcm5hbmRlczEwQGdtYWlsLmNvbSJ9.bQtQsgkxJ6hNKtC-C8DHvy7KfKwdWowns4osQLnuyBV4Q-EVZEmJ7BMHI7hzlQVM-QJ_ttVdwJPmn6idpm_FAdhe1YdoGU9PrOgTo3L23n93ZPMObZsoLxjqVIR5Or02RvUmHEGYjG5PXl8iVQv9l5CNOob9ZTldwubYlNGnED_7WLt8Tjr0so_IO34jeTCwVDq-z1jkhY4cMyxxY4lgCHkhGjDPkM9qIEywybIFuSw2OrctLnGWU7vJziQ7dbzFUAZx5BB-q1iDHPUxMoMoLwRmvLVXO8WzdR5DJvuZyq-ztiG0r7R0L3Dwfi_nvgjR4o91_AntZXMqxXxrQhbZ6g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/c722377a-0dee-42e7-a66e-6d199dab1abf",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										"c722377a-0dee-42e7-a66e-6d199dab1abf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user favorite products",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3VDI2V19rZW9lczNRZlJKcjVXTGRIR3dWRFowd19leUsyeDZyd2xfallZIn0.eyJleHAiOjE3MzA3NjkyNTQsImlhdCI6MTczMDc2NzQ1NCwiYXV0aF90aW1lIjoxNzMwNzY3NDUxLCJqdGkiOiJhNDUzMzg1MC02MmY0LTQ5MmItYmU0Mi1lYzMyN2U3YTkxMDUiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjNzIyMzc3YS0wZGVlLTQyZTctYTY2ZS02ZDE5OWRhYjFhYmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJyZWNlaXB0LWJmZiIsInNpZCI6IjI1NjU0ZjIzLTQ4MTQtNDJjYy1hMjRlLWQ4N2M4ZTQ0NTMyMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwLyoiLCJodHRwOi8vbG9jYWxob3N0OjgwMDAvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbiBmZXJuYW5kZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqdWFuIiwiZ2l2ZW5fbmFtZSI6Imp1YW4iLCJmYW1pbHlfbmFtZSI6ImZlcm5hbmRlcyIsImVtYWlsIjoianVhbmZlcm5hbmRlczEwQGdtYWlsLmNvbSJ9.lPDEzO_e6ciz0h9OEdxvwwpu2m37DTd7HjULmjMeQOhMmR_CX-pZqAvQffECjvbSHNMyTDhbhgeFiy7qBdZlZUu2_R4uhSJ8IDA-VPvx3LM1OFj4yxoAjj4idllsb6xYNaWSWVgjWZ5U1CjaGXhdhe_HUeLtcnRvVp7DG7bx23j2Q5ncuuV80vYDD7c2rMTtn5q5-WKZdNJp2X2meMQhyQvTacO9q6pWetmK8tkdziUmgANbEqz5NADjA6S9hlA8-kNX6q-fldatGPFPAbiZNBG51vG4PnnWp3--V9jSyWL-RGntPfXRpTPocoaDfDlArCfIVFL2wTb4VXqVa32GAg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/c722377a-0dee-42e7-a66e-6d199dab1abf/favorites?page=0&size=9&sortDirection=ASC&sortBy=name",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										"c722377a-0dee-42e7-a66e-6d199dab1abf",
+										"favorites"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "9"
+										},
+										{
+											"key": "sortDirection",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get receipts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/:idKeycloak/receipts?page=0&size=9&sortDirection=ASC&sortBy=scannedAt",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										":idKeycloak",
+										"receipts"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "9"
+										},
+										{
+											"key": "sortDirection",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "scannedAt"
+										}
+									],
+									"variable": [
+										{
+											"key": "idKeycloak",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Follow user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxSDZWa2RZRFVrZkhJS1lXUFY1SV9aTXY1QVIyWGwyaE9uQUE3b2ptT244In0.eyJleHAiOjE3MzE0NjE1MDMsImlhdCI6MTczMTQ1OTcwMywiYXV0aF90aW1lIjoxNzMxNDU5NzAxLCJqdGkiOiI1OTYzMzgzMC04M2VkLTQ0NjktODVjMy0zOGRjZWVmNTRkOTYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL25vdGEtc29jaWFsIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImE0OGFkMzMxLTY4NmYtNDUzOC1hMDdhLTgxOWJlZGRjODBkMSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImdhdGV3YXkiLCJzaWQiOiI2YWIzOGE0OS1hOGNiLTQyNDktYTZhNy1lNTQyNDk1NTc0OTAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC8qIiwiaHR0cDovL2xvY2FsaG9zdDo4MDAwLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiQ1VTVE9NRVIiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbm90YS1zb2NpYWwiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbjIzIGZlcm5hbmRlczIzIiwicHJlZmVycmVkX3VzZXJuYW1lIjoianVhbjIzIiwiZ2l2ZW5fbmFtZSI6Imp1YW4yMyIsImZhbWlseV9uYW1lIjoiZmVybmFuZGVzMjMiLCJlbWFpbCI6Imp1YW5mZXJuYW5kZXMyM0BnbWFpbC5jb20ifQ.ZMx266Ni8PBhC2tXO2XKevnCM-spoMuk8hU48wK7kQbp0Aw_ElNuE0KXEcBvW4a1042U-G2k19rp6t28DLAXnC4zzusQc8gAwznu1Q3l61sjjFmXitcWcqheWHzsZpcCDU455jo978rkLb7KYQRevgnwfYkanV-oBDXsd49UkYgg-HjiqhhSyESa7urvwO5bU_eD3728doY224TnKcuZl1rONf7LVnypKJD5JyYFEmffYIRfdR7SE8MPIIFYMXLd-jIiS7FtFXnei3uGQr4qsaSXwtRD7Iy-mDyyVUVChrM0ITRKUBgbLCcA2NgfTRMC9w35wLw9dW8pmtN7M7qlUQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/follow/:userKeycloakId",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										"follow",
+										":userKeycloakId"
+									],
+									"variable": [
+										{
+											"key": "userKeycloakId",
+											"value": "262e7f17-b30b-4b9b-a97d-dfe5c83b0643"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get following users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxSDZWa2RZRFVrZkhJS1lXUFY1SV9aTXY1QVIyWGwyaE9uQUE3b2ptT244In0.eyJleHAiOjE3MzE1MjU5NDgsImlhdCI6MTczMTUyNDE0OCwiYXV0aF90aW1lIjoxNzMxNTI0MTQ2LCJqdGkiOiIyMjdjNzMxZC05MTk1LTQ5MDgtODk2ZC0wY2M0ZGNlZDIzMTciLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL25vdGEtc29jaWFsIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjQwZjNiMjZiLWJhYzQtNDkwNi1iZThhLTAzMjZkYTBkMDkxMCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImdhdGV3YXkiLCJzaWQiOiJlOWRhZDJhYi1lNTI3LTQxNGUtODAzNi0xNzEzMGViZjNlZmIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC8qIiwiaHR0cDovL2xvY2FsaG9zdDo4MDAwLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiQ1VTVE9NRVIiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbm90YS1zb2NpYWwiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbjI2IGZlcm5hbmRlczI2IiwicHJlZmVycmVkX3VzZXJuYW1lIjoianVhbjI2IiwiZ2l2ZW5fbmFtZSI6Imp1YW4yNiIsImZhbWlseV9uYW1lIjoiZmVybmFuZGVzMjYiLCJlbWFpbCI6Imp1YW5mZXJuYW5kZXMyNkBnbWFpbC5jb20ifQ.MZUr-kFIzfggttz6oLziYS31aQbB8YTuzEm5bfiDIZmPsQS9XgaTVwAESF1ErpM3SXx6OayH-ZG7axxWe_5tD2mZsc-0Np7uXP6UP82P8y2qlS1DCzKq_FCQ4v1s9bX_jlTfsEedwvV7Ozvy_YlCvlfBK9Nv3skBF6aEjyWUzEHpzBKUa1Gytoxp2g2lfKDAw9Ef41XReMLWPMn6QvgGTboAVYtjAJe48ammO_z7qw1a7_tzXUCd-aa_bTfblLjVMiTu0sWcy4kUhHhpowYYyNO14NmmQYUjcAY5eQSKnahx0fScjAo29Qo5o-4-EWLV7InwlVsuxLc5UJ1CKJf_OQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/following?page=0&size=9&sortDirection=ASC&sortBy=name",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										"following"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "9"
+										},
+										{
+											"key": "sortDirection",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										},
+										{
+											"key": null,
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get follower users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxSDZWa2RZRFVrZkhJS1lXUFY1SV9aTXY1QVIyWGwyaE9uQUE3b2ptT244In0.eyJleHAiOjE3MzE0NzE3MjIsImlhdCI6MTczMTQ2OTkyMiwiYXV0aF90aW1lIjoxNzMxNDY5OTE5LCJqdGkiOiJlN2MyMzYyMC04ODNmLTQ2M2MtYThmNy04YjI5NmU2Y2I0YmQiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL25vdGEtc29jaWFsIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjQwZjNiMjZiLWJhYzQtNDkwNi1iZThhLTAzMjZkYTBkMDkxMCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImdhdGV3YXkiLCJzaWQiOiI0MTUxMjViYy0zNTE1LTQzZmYtYjNkMC04MWVhOTA5OGM1MTIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC8qIiwiaHR0cDovL2xvY2FsaG9zdDo4MDAwLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiQ1VTVE9NRVIiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtbm90YS1zb2NpYWwiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbjI2IGZlcm5hbmRlczI2IiwicHJlZmVycmVkX3VzZXJuYW1lIjoianVhbjI2IiwiZ2l2ZW5fbmFtZSI6Imp1YW4yNiIsImZhbWlseV9uYW1lIjoiZmVybmFuZGVzMjYiLCJlbWFpbCI6Imp1YW5mZXJuYW5kZXMyNkBnbWFpbC5jb20ifQ.UkG61-07akjh3o0bWcQjmNla-95V2aToBsLRaCg45DrzrqaQ0rHExkkP3SOPi2PM1NmrGWESOg8rXGY21fZYs-hwzzZYIhHLQ5BJCon5pek8HIUu6LwTXLOwLBOllLqDmMz7GrQtDXEQU39Vya0TdmoigBRV7V7Rs0wACFb1PZTlwFnKbxNBH5VQKD2xVmzRcnNlJg_dLW9dbH1X5qh0XCgGHbhTKSQntcNf2foA6U9rXonVc-fMtFeuaVnQo6Q8VEA9Mt2iqh3zz9lGgQMp7vs8qAksj4i2NZ4L9ZWF8LCHfW0lhJ35zlQ2lbOjurhq_tNlkTZy1NIBTxHDhD2fng",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8085/profile/following?page=0&size=9&sortDirection=ASC&sortBy=name",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"profile",
+										"following"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "9"
+										},
+										{
+											"key": "sortDirection",
+											"value": "ASC"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										},
+										{
+											"key": null,
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Get Product Cards",
 					"request": {
 						"method": "GET",
 						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get user profile",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Favorite product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3VDI2V19rZW9lczNRZlJKcjVXTGRIR3dWRFowd19leUsyeDZyd2xfallZIn0.eyJleHAiOjE3MzA3NjkyNTQsImlhdCI6MTczMDc2NzQ1NCwiYXV0aF90aW1lIjoxNzMwNzY3NDUxLCJqdGkiOiJhNDUzMzg1MC02MmY0LTQ5MmItYmU0Mi1lYzMyN2U3YTkxMDUiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjNzIyMzc3YS0wZGVlLTQyZTctYTY2ZS02ZDE5OWRhYjFhYmYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJyZWNlaXB0LWJmZiIsInNpZCI6IjI1NjU0ZjIzLTQ4MTQtNDJjYy1hMjRlLWQ4N2M4ZTQ0NTMyMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwLyoiLCJodHRwOi8vbG9jYWxob3N0OjgwMDAvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1tYXN0ZXIiLCJvZmZsaW5lX2FjY2VzcyIsIkNVU1RPTUVSIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoianVhbiBmZXJuYW5kZXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqdWFuIiwiZ2l2ZW5fbmFtZSI6Imp1YW4iLCJmYW1pbHlfbmFtZSI6ImZlcm5hbmRlcyIsImVtYWlsIjoianVhbmZlcm5hbmRlczEwQGdtYWlsLmNvbSJ9.lPDEzO_e6ciz0h9OEdxvwwpu2m37DTd7HjULmjMeQOhMmR_CX-pZqAvQffECjvbSHNMyTDhbhgeFiy7qBdZlZUu2_R4uhSJ8IDA-VPvx3LM1OFj4yxoAjj4idllsb6xYNaWSWVgjWZ5U1CjaGXhdhe_HUeLtcnRvVp7DG7bx23j2Q5ncuuV80vYDD7c2rMTtn5q5-WKZdNJp2X2meMQhyQvTacO9q6pWetmK8tkdziUmgANbEqz5NADjA6S9hlA8-kNX6q-fldatGPFPAbiZNBG51vG4PnnWp3--V9jSyWL-RGntPfXRpTPocoaDfDlArCfIVFL2wTb4VXqVa32GAg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8085/product/favorite/:productId",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"product",
+								"favorite",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "05cdac1d-5d5f-4b35-96a5-91176ce03fdd"
+								}
+							]
+						}
 					},
 					"response": []
 				}
