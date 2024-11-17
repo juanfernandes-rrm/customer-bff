@@ -38,7 +38,7 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
     healthcheck:
-      test: ["CMD-SHELL", "rabbitmqctl status"]
+      test: ["CMD-SHELL", "rabbitmq-diagnostics check_running"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -64,6 +64,8 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=user
       - SPRING_RABBITMQ_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/nota-social
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8082:8082"
 
@@ -89,6 +91,8 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=user
       - SPRING_RABBITMQ_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/nota-social
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8083:8083"
 
@@ -114,6 +118,12 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=user
       - SPRING_RABBITMQ_PASSWORD=password
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=nota-social
+      - KEYCLOAK_RESOURCE=register
+      - KEYCLOAK_CREDENTIALS_SECRET=F2o1v182StqTH1oZw9asns1uT0P7tMEn
+      - SOCIAL_SERVICE_URL=http://social:8085
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8084:8084"
 
@@ -137,6 +147,12 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=user
       - SPRING_RABBITMQ_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/nota-social
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/nota-social/protocol/openid-connect/certs
+      - CATALOG_SERVICE_URL=http://catalog:8083
+      - RECEIPT_SCAN_SERVICE_URL=http://receipt-scan:8082
+      - REGISTER_SERVICE_URL=http://register:8084
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8085:8085"
 
@@ -150,12 +166,11 @@ services:
       keycloak:
         condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/social_db?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_USERNAME=user
-      - SPRING_RABBITMQ_PASSWORD=password
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=nota-social
+      - KEYCLOAK_RESOURCE=auth
+      - KEYCLOAK_CREDENTIALS_SECRET=F2o1v182StqTH1oZw9asns1uT0P7tMEn
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8086:8086"
 
@@ -195,6 +210,7 @@ services:
       - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://social:8085
       - SPRING_CLOUD_GATEWAY_ROUTES_3_PREDICATES_0=Path=/social/**
       - SPRING_CLOUD_GATEWAY_ROUTES_3_FILTERS_0=StripPrefix=1
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
     ports:
       - "8000:8000"
 
@@ -211,7 +227,7 @@ services:
       KC_DB_URL: jdbc:mysql://database:3306/keycloak?createDatabaseIfNotExist=true
       KC_DB_USERNAME: root
       KC_DB_PASSWORD: rootpassword
-
+      KC_HOSTNAME: keycloak
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
       KC_PROXY: "edge"
@@ -225,12 +241,12 @@ services:
         condition: service_healthy
     volumes:
       - ./docker/keycloak/keycloak-realm-export.json:/opt/keycloak/data/import/realm-config.json
-    command: [ "start-dev", "--import-realm" ]
+    command: ["start-dev", "--import-realm"]
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;cat <&3 | grep -q '\"status\": \"UP\"' && exit 0 || exit 1" ]
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 4
 
 volumes:
   mysql_data:
