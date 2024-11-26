@@ -227,7 +227,7 @@ services:
       KC_DB_URL: jdbc:mysql://database:3306/keycloak?createDatabaseIfNotExist=true
       KC_DB_USERNAME: root
       KC_DB_PASSWORD: rootpassword
-      KC_HOSTNAME: keycloak
+
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
       KC_PROXY: "edge"
