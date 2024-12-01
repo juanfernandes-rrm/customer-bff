@@ -1,7 +1,8 @@
-﻿# gateway
+﻿# Gateway - Nota Social
 
-Este projeto é o ***BFF*** mobile do sistema **NotaSocial**, desenvolvido para a disciplina de **Trabalho de Conclusão do Curso(TCC)**. Ele coordena as requisições aos serviços: ***receipt-scan, catalog, register, e social***.
-Este readme descreve como configurar e executar o sistama a partir do ***customer-bff**.
+Bem-vindo ao projeto Gateway do sistema NotaSocial. Este projeto faz parte do Trabalho de Conclusão de Curso (TCC) do Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas (TADS) - UFPR. O Gateway é responsável por rotear as requisições para os serviços do sistema: receipt-scan, catalog, register, social e auth.
+
+Este documento fornece instruções detalhadas para configurar e executar o Gateway, além de descrever o funcionamento e propósito de cada serviço integrado.
 
 ## Pré-requisitos
 
@@ -21,7 +22,7 @@ Para que o docker-compose seja executado corretamente, clone os repositórios do
 - [auth](https://github.com/juanfernandes-rrm/auth-mvp)
 
 ```
-project
+nota-social
 └─── gateway
 └─── receipt-scan
 └─── catalog
@@ -32,12 +33,21 @@ project
 
 ### 2. Configuração do Docker Compose
 
-O arquivo docker-compose.yml já está configurado para construir a imagem dos serviços e subir os contêiner. Além dos serviços, também é levantado os contêineres do RabbitMQ e Mysql.
+O arquivo docker-compose.yml já está configurado para construir a imagem dos serviços e subir os contêineres. Além dos serviços principais, também são levantados os contêineres do RabbitMQ, MySQL e Keycloak.
+
+A única configuração necessária é definir os client-secrets do Keycloak para os serviços Auth e Register. Para isso:
+
+1. Acesse o Keycloak com as credenciais configuradas no docker-compose.yml.
+2. No cluster nota-social, navegue até a seção Clients.
+3. Gere novos client-secrets para os serviços Auth e Register.
+4. Configure cada client-secret na variável de ambiente correspondente:
+        KEYCLOAK_CREDENTIALS_SECRET para cada serviço.
+
 Caso necessite, ajuste o arquivo docker-compose.yml. Certifique-se de que todas as imagens e configurações estejam corretas, especialmente as variáveis de ambiente.
 
 ### 3.Construir e Iniciar os Contêineres
 
-No diretório raiz do projeto, execute:
+No diretório `docker/docker` do projeto, execute:
 
 ```bash
 docker-compose up --build
@@ -48,22 +58,18 @@ Isso irá construir as imagens e iniciar os contêineres conforme configurado no
 
 ### 4. Serviços Disponíveis
 
-    receipt-scan: Responsável por ...
-    catalog: Responsável por ...
-    register: Responsável por ...
-    social: Responsável por ...
-    auth: Responsável por ...
+- receipt-scan: Responsável por extrair, processar e guardar informações das notas fiscais, como produtos adquiridos, preços, quantidade e identificação da loja. Utiliza técnicas de scraping para extrair os dados.
 
-### 5. Documentação dos Endpoints
+- catalog: Responsável por processar e armazenar as informações de produtos, como o cadastro dos produtos extraídos das notas fiscais e seus relacionamentos com os estabelecimentos e filiais, atualização e histórico de preços, e outras informações relacionadas. Fornece APIs para consulta destes dados.
+    
+- register: Responsável por gerenciar informações e operações relacionadas aos usuários, como cadastro e atualização de dados pessoais. Além de realizar o cadastro de estabelecimentos e filiais, associando usuários a estabelecimentos.
+    
+- social: Responsável por funcionalidades relacionadas a interações sociais entre os usuários. Por exemplo, postagens, comentários, compartilhamentos, conexões entre usuários, etc.
+    
+- auth: Responsável por gerenciar o processo de autenticação dos usuários no sistema. Ele atua como intermediário entre os clientes e o Keycloak (Gerenciador de identidade e acesso).
 
-No projeto, está disponibilizado uma collection postman.
+### 5. Recursos Adicionais
 
-
-    receipt-scan: Documentação dos endpoints
-    catalog: Documentação dos endpoints
-    register: Documentação dos endpoints
-    social: Documentação dos endpoints
-    gateway: Documentação dos endpoints
-    auth: Documentação dos endpoints
+Uma collection Postman está disponível no projeto, contendo todos os endpoints desenvolvidos para facilitar os testes e a integração com os serviços do sistema.
 
     
