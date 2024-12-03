@@ -19,15 +19,21 @@ spring:
             - Path=/catalog/**
           filters:
             - StripPrefix=1
-        - id: user
+        - id: register
           uri: http://localhost:8084
           predicates:
-            - Path=/user/**
+            - Path=/register/**
           filters:
             - StripPrefix=1
         - id: social
           uri: http://localhost:8085
           predicates:
             - Path=/social/**
+          filters:
+            - StripPrefix=1
+        - id: auth
+          uri: http://localhost:8086
+          predicates:
+            - Path=/auth/**
           filters:
             - StripPrefix=1
