@@ -6,6 +6,22 @@ spring:
     name: gateway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]': # Configuração de CORS global para todas as rotas
+            allowedOrigins:
+              - "http://localhost:4200" # Permite acesso a partir do frontend em localhost:4200
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+              - "OPTIONS"
+            allowedHeaders:
+              - "Authorization"
+              - "Content-Type"
+              - "ngrok-skip-browser-warning" # to allow request from ngrok
+            allowCredentials: true # Permite envio de cookies e credenciais
       routes:
         - id: receipt-scan
           uri: http://localhost:8082
